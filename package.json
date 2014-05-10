@@ -3,7 +3,15 @@
   "version": "0.0.0",
   "dependencies": {
     "express": ">4.0.0",
-    "ejs": "~0.8.4"
+    "ejs": "~0.8.4",
+    "mongoose": "*",
+    "redis": "*",
+    "aws-sdk": "*",
+    "cookie": "*",
+    "connect": "*",
+    "body-parser": "*",
+    "method-override": "*",
+    "morgan": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
