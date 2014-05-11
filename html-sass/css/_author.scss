@@ -1,0 +1,198 @@
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+@import 'bourbon/_bourbon.scss';
+@import '_my-mixin.scss';
+
+$main-font: "Yanone Kaffeesatz", "Helvetica Neue", Helvetica, Arial, sans-serif sans-serif;
+$light: #999;
+$dark: #333;
+$action: #5eadc8;
+
+body {
+	border-top: 4px solid $action;
+	padding: 0;
+	margin: 0;
+	font-family: $main-font;
+	font-size: 18px;
+	color: #333;
+	min-width: 600px;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+	line-height: 1.8em;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+input:focus, a:focus, button:focus {
+	outline: none;	
+}
+
+input:focus {
+	border-bottom: 1px solid $action;
+	background-color: lighten($action, 35%);
+}
+
+a:focus, button:focus, a:hover {
+	color: $action;
+}
+
+header {
+	text-align: right;
+	padding: 0.7em;
+	font-size: 0.8em;
+	width: 90%;
+	margin: 0 auto;
+	a {
+		padding: 1em;
+	}
+}
+
+.main-view {
+	padding-top: 4em;
+	width: 90%;
+	margin: 0 auto;
+	text-transform: lowercase;
+}
+button {
+	border: 1px solid $action;
+	border-radius: 4px;
+	padding: 0.7em 1em;
+	line-height: 1em;
+	background: transparent;
+	font-size: 0.8em;
+	text-transform: lowercase;
+	color: $action;
+	cursor: pointer;
+	&:focus, &:hover {
+		background-color: lighten( $action, 35% );
+		border: 1px solid $action;
+	}
+	&.small {
+		font-size: 0.6em;
+	}
+	&.bold {
+		font-weight: bold;
+	}
+	&.no-btn {
+		color: $light;
+		border: none;
+		&:hover {
+			color: $dark;
+			background: transparent;
+		}
+	}
+}
+
+section {
+	margin: 2em auto;
+	width: 80%;
+	&.greeting {
+		margin: 14em auto 8em;
+		font-size: 1.4em;
+		h1 {
+			margin: 0.3em auto 1.5em;
+		}
+		p {
+			margin-bottom: 0;
+		}
+		span{
+			font-weight: bold;
+			text-transform: capitalize;
+		}
+	}
+	h2 {
+		margin: 4em auto 2em;
+	}
+	label {
+		display: block;
+		font-size: 1em;
+		color: $light;
+	}
+	input {
+		border: none;
+		border-bottom: 1px solid lighten($light, 25%);;
+		color: $action;
+		padding: 0.7em 0.5em;
+		width: 60%;
+		font-size: 0.8em;
+		margin: 0.3em auto 1em;
+	}
+
+	pre {
+		background-color: #f5f5f5;
+		border-radius: 4px;
+		width: 70%;
+		font-size: 0.7em;
+		padding: 1em;
+		min-height: 8em;
+		text-align: left;
+		color: $light;
+	}
+}
+
+.test {
+	margin: 4em auto 8em;
+	font-size: 1.4em;
+}
+
+.modal-view {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	background-color: rgba(0,0,0,0.4);
+	text-align: center;
+
+	.modal {
+		width: 80%;
+		max-width: 400px;
+		margin: auto;
+		height: 30em;
+		position: absolute;
+		background-color: #fff;
+		top: 0; left: 0; right: 0; bottom: 0;
+
+		> div {
+			padding: 0.2em 2em;
+		}
+
+		.dash-box {
+			background-color: #0d212b;
+			min-height: 10em;
+		}
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
