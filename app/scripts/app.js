@@ -5,7 +5,21 @@ angular.module('dashbenchApp', ['ngRoute'])
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        controller: 'MainCtrl',
+        resolve: {
+          check: [
+          '$rootScope',
+          '$location',
+          function($rootScope, $location) {
+
+            if (!$rootScope.user) 
+              return $location.path('/login');
+
+            if (!$rootScope.user.confirmed) 
+              return $location.path('/verify');
+
+          }]
+        }
       })
       .when('/login', {
         templateUrl: 'views/login.html',
@@ -15,40 +29,46 @@ angular.module('dashbenchApp', ['ngRoute'])
           '$rootScope',
           '$location',
           'Authenticate',
-          // '$http',
           function($rootScope, $location, Authenticate, $http) {
-            
-            var path = $rootScope.prev || '/feed';
 
-            // $('html').css('background-color', '#df4a29');
-
-            if ($rootScope.user) {
-              return $location.path(path);
-            }
-            
             return Authenticate();
-            
-            // var deffered = $q.defer();
-
-            $http.post('/login')
-            .success(function(data){
-              $rootScope.user = data;
-              // if (path == '/') path = '/feeds';
-              $location.path(path);
-
-              // $location.path(path);
-            })
-            .error(function(error){
-              // $location.path('/');
-              // $rootScope.authenticated = false;
-            });
 
           }]
         }
       })
       .when('/signup', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl'
+        templateUrl: 'views/signup.html',
+        controller: 'SignupCtrl',
+        resolve: {
+          check: [
+          '$rootScope',
+          '$location',
+          'Authenticate',
+          function($rootScope, $location, Authenticate, $http) {
+
+            return Authenticate();
+
+          }]
+        }
+      })
+      .when('/verify', {
+        templateUrl: 'views/verify.html',
+        controller: 'VerifyCtrl',
+        resolve: {
+          check: [
+          '$rootScope',
+          '$location',
+          'Authenticate',
+          function($rootScope, $location, Authenticate, $http) {
+
+            if (!$rootScope.user) 
+              return $location.path('/login');
+
+            if ($rootScope.user.confirmed) 
+              return $location.path('/');
+
+          }]
+        }
       })
       .otherwise({
         redirectTo: '/'

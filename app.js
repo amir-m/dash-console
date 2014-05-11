@@ -1,22 +1,27 @@
-var express = require("express");
- 
-var app = express();
-// app.use(express.logger());
+var express = require("express"),
+	app = express(),
+	cluster = require('cluster'), 
+	cpuCount = require('os').cpus().length,
+	server = require('http').createServer(app),
+	models = require('./models'),
+	notifications = require('./notifications');
 
-// Configuration
+models.ready(function(){
+	notifications.setModel(models);
+	require('./config')(app, express, models);
+	require('./router')(app, models, notifications);
 
-app.set('views', __dirname + '/app');
-app.use(require('body-parser')());
-app.use(require('method-override')());
-app.use(require('morgan')('dev'));
-app.use(express.static(__dirname + '/app'));
-app.engine('html', require('ejs').renderFile);
+	// models.User.find({}, function(error, users){
+	// 	for (var i = 0; i < users.length; ++i) {
+			// require('./graph').deleteEverything(function(data){
+			// 	console.log(data);
+			// });
+	// 	}
+	// });
 
-app.get('/', function(request, response) {
-  response.render('index.html')
 });
 
 var port = process.env.PORT || 8080;
-app.listen(port, function() {
+server.listen(port, function() {
   console.log("Listening on " + port);
 });

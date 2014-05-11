@@ -9,9 +9,12 @@
     "aws-sdk": "*",
     "cookie": "*",
     "connect": "*",
+    "async": "*",
+    "bcrypt": "*",
     "body-parser": "*",
     "method-override": "*",
-    "morgan": "*"
+    "morgan": "*",
+    "mailgun-js": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",
