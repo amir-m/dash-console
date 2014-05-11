@@ -58,6 +58,23 @@ header {
 	width: 90%;
 	margin: 0 auto;
 	text-transform: lowercase;
+	.temps {
+		a {
+			padding: 2em 1.5em 0.2em;
+			border: 1px solid lighten($light, 35%);
+			border-radius: 4px;
+			margin-top: 2em;
+			margin-right: 1em;
+			display: inline-block;
+		}
+
+		.selected {
+			color: #fff;
+			border: 1px solid $action;
+			background-color: $action;
+		}
+	}
+
 }
 button {
 	border: 1px solid $action;
@@ -128,11 +145,15 @@ section {
 		background-color: #f5f5f5;
 		border-radius: 4px;
 		width: 70%;
+		max-width: 400px;
 		font-size: 0.7em;
 		padding: 1em;
 		min-height: 8em;
 		text-align: left;
 		color: $light;
+		position: fixed;
+		bottom: 2em;
+		right: 3%;
 	}
 }
 
@@ -154,7 +175,7 @@ section {
 		width: 80%;
 		max-width: 400px;
 		margin: auto;
-		height: 30em;
+		height: 40%;
 		position: absolute;
 		background-color: #fff;
 		top: 0; left: 0; right: 0; bottom: 0;
@@ -162,19 +183,232 @@ section {
 		> div {
 			padding: 0.2em 2em;
 		}
+	}
+}
 
-		.dash-box {
-			background-color: #0d212b;
-			min-height: 10em;
+.dash-box {
+	background-color: #0d212b;
+	min-height: 10em;
+}
+
+.login {
+	width: 90%;
+	max-width: 380px;
+	margin: 7em auto 2em;
+	padding: 1.4em 0.8em 0.8em 0;
+	border: 1px solid lighten($light, 30%);
+	border-radius: 4px;
+	section {
+		margin: 0 auto 0em;
+		text-align: center;
+		input {
+			width: 100%;
+		}
+		button {
+			text-align: center;
+			margin-bottom: 3em;
+			display: block;
+			font-size: 1em;
+			margin: 1em auto 2em;
+			width: 8em;
+		}
+		small a {
+			color: $light;
 		}
 	}
 }
 
+.review {
+	max-width: 1000px;
+	margin: auto;
+	ul {
+		padding: 0;
+		li {
+			width: 100%;
+			list-style-type: none;
+			border-top: 1px solid $light;	
+		}
+		aside {
+			width: 100%;
+			display: table;
+			section {
+				width: 50%;
+				display: table-cell;
+				padding:2em; 
+				vertical-align: middle;
+				pre {
+					position: relative;
+					right: 0;
+					bottom: 0;
+					width: 100%;
+					max-width: none;
+				}
+			}
+
+		}
+		
+	}
+}
 
 
+.all-dashes{
+	width: 100%;
+	height: 100%;
+	padding: 75px 0 0 0;
+	background: #0d212b;
+	z-index: -1;
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+
+	h1, h2, h3 {
+		margin-top: 0;
+		margin-bottom: 0.5em;
+		font-weight: 300;
+	}
+
+	h1 {
+		line-height: 1.8em;
+		font-size: 1.4em;
+		font-weight: 300;
+	}
+
+	p {
+		margin-top: 0;
+		margin-bottom: 0.5em;
+	}
+	a:hover {
+		color: #fff;
+	}
+	article {
+		width: 320px;
+		margin: 0 auto;
+		position: relative;
+	}
+
+	article header {
+		text-align: left;
+		padding: 0;
+		margin: 0;
+	}
+
+	article header h1 {
+		font-size: 0.7em;
+		font-weight: bold;
+		text-transform: uppercase;
+		line-height: 0.5em;
+		margin-left: 0.5em;
+		position: relative;
+	}
+	article header h1 span {
+		text-transform: capitalize;
+		font-weight: 300;
+	}
+	article header h1 img {
+		width: 10px;
+		height: 10px;
+		margin-top: 6px;
+		margin-right: 0.2em;
+		vertical-align: text-bottom;
+	}
+	.front, .back {
+	min-height: 80px;
+	margin: 0.8em auto 1.2em;
+	border: solid 1px #17313d;
+	border-radius: 3px;
+	position: relative;
+	background: #0e2936;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+	
+	-webkit-perspective: 600px;
+	-moz-perspective: 600px;
+	}
+
+	.viewport {
+    width: 298px;
+    overflow: hidden;
+    margin: 0 auto;
+    -webkit-transform: translateZ(0); /* Optional: When heavy at iOS6+ */
+	}
+
+	.viewport section {
+		float: left;
+		width: 298px;
+		margin: 0;
+		margin-right: 17px;
+	}
+
+	.viewport section > div {
+		border-bottom: 1px solid #163240;
+		margin-bottom: 1em;
+		position:relative;
+		min-height: 70px;
+	}
+
+	.viewport section > div:last-child {
+		border-bottom: none;
+		margin-bottom: 0;
+		padding-bottom: 0.5em;
+	}
+
+	.table {
+	display: table;
+	}
+
+	.cell {
+		display: table-cell;
+		vertical-align: top;
+		padding: 0.5em;
+	}
+
+	.middle {
+		vertical-align: middle;
+	}
+
+	.hero {
+		padding: 0.5em;
+		width: 284px;
+	}
+	.avatar {
+		border-radius: 8px;
+		width: 50px;
+	}
+
+	.location-btn {
+		background: url(../img/location-btn.png) no-repeat center center;
+		background-size: 20px;
+	}
+
+	.location-btn a {
+		width: 40px;
+		height: 40px;
+		display: block;
+	}
+
+	.grey {
+		color: #666;
+	}
+
+	.bold {
+		font-weight: 400;
+	}
+
+	.centered {
+		text-align: center;
+	}
+
+	.middle {
+		vertical-align: middle;
+	}
+
+	.scalar {
+	}
+	.unit {
+		font-size: 0.7em;
+	}
 
 
-
+}
 
 
 
