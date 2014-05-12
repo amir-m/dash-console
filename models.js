@@ -2,9 +2,14 @@ var connectionString = "mongodb://admin:IuT603JamshEqplE2N&0}x!@candidate.19.mon
 	mongoose = require('mongoose'),
 	crypto = require('crypto'),
 	bcrypt = require('bcrypt'),
-	async = require('async');
+	async = require('async'),
+	redisClients;
 
- 
+exports.init = function (r) {
+	
+	redisClients = r;
+};
+
 exports.ready = function (callback) {
 	
 	mongoose.connect(connectionString, function(error){
@@ -44,8 +49,26 @@ BenchUserSchema.methods.json = function(pass) {
 	delete u['confirmation_id'];
 	delete u['password'];
 	delete u['email'];
-	return u
+	return u;
 };
+
+BenchUserSchema.statics.findUserFromSession = function(session_id, callback) {
+	
+	var self = this;
+
+	redisClients.hgetall('session:'+session_id, function(error, session){
+		console.log(session);
+		// callback(null, session);
+		if (!session) return callback(401);
+
+		session.updated_at = (new Date().getTime()).toString();
+
+		redisClients.hmset("session:"+session_id, session);
+
+		return self.where('id', session.user_id).exec(callback);
+		// todo... update
+	});
+}
 
 BenchUserSchema.set('toObject', { virtuals: true });
 
@@ -75,7 +98,51 @@ var _objectId = function() {
 	return (new Buffer(id).toString('base64').replace(/=/g, ""));
 };
 
+// var SessionSchema = new mongoose.Schema({
+// 		id: { type: String, required: true },
+// 		user_id: String,
+// 		isActive: { type: Boolean, default: true },
+// 		created_at: { type: Date, default: now() },
+// 		updated_at: Date,
+// 		ip: String,
+// 		user_agent: String
+// 	});
+
+function createSession (session_id, user, ip, agent) {
+
+	redisClients.hmset("session:"+session_id, {
+		'id': session_id, 
+		'user_id': user.id,
+		'is_active': 'yes',
+		'ip': ip,
+		'user_agent': agent,
+		'created_at': (new Date().getTime()).toString(),
+		'updated_at': (new Date().getTime()).toString() 
+	});
+};
+
+function getSession (session_id, callback) {
+	console.log(session_id)
+	redisClients.hgetall("session:"+session_id, callback);
+};
+
+function getAndUpdateSession (session_id, callback) {
+	redisClients.hgetall('sessions:'+session_id, function(error, session){
+		console.log(session);
+		callback(session);
+		// todo... update
+	});
+};
+
+function destroySession (session_id) {
+
+	redisClients.del("session:"+session_id);
+};
+
 exports.BenchUser = BenchUser;
 exports.cipher = cipher;
 exports.decipher = decipher;
 exports.id = _objectId;
+exports.getSession = getSession;
+exports.createSession = createSession;
+exports.getAndUpdateSession = getAndUpdateSession;

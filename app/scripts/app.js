@@ -26,10 +26,8 @@ angular.module('dashbenchApp', ['ngRoute'])
         controller: 'LoginCtrl',
         resolve: {
           check: [
-          '$rootScope',
-          '$location',
           'Authenticate',
-          function($rootScope, $location, Authenticate, $http) {
+          function(Authenticate) {
 
             return Authenticate();
 

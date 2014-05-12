@@ -9,9 +9,12 @@ angular.module('dashbenchApp')
 	function($rootScope, $q, $http, $location) {
 		return function() {
             var deferred = $q.defer();
+            
+            var path = $rootScope.prev || '/';
+            if (path == '/login' || path == '/signup') path = '/';
 
 			if ($rootScope.user) {
-              return $location.path('/');
+              return $location.path(path);
             }
 
             $http.post('/login')
@@ -20,12 +23,9 @@ angular.module('dashbenchApp')
 
 				if (!user.confimed) return $location.path('/verify');
 
-	            var path = $rootScope.prev || '/';
-	            $rootScope.notAuthorized = null;
 	            return $location.path(path);
 			})
 			.error(function(error){
-				$rootScope.notAuthorized = true;
 				deferred.resolve();
 			});
             

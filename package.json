@@ -14,7 +14,11 @@
     "body-parser": "*",
     "method-override": "*",
     "morgan": "*",
-    "mailgun-js": "*"
+    "mailgun-js": "*",
+    "express-session": "*",
+    "connect-redis": "*",
+    "connect-flash": "*",
+    "cookie-parser": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.4",

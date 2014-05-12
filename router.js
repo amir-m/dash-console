@@ -1,7 +1,7 @@
-module.exports = function (app, models, notifications) {
+module.exports = function (app, models, notifications, redisClient) {
 
 	var routes = require('./routes');
-	routes.init(models, notifications);
+	routes.init(models, notifications, redisClient);
 
 	app.get('/', routes.index);
 	app.post('/login', routes.postLogin);

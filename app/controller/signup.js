@@ -19,6 +19,7 @@ angular.module('dashbenchApp')
 			})
 			.success(function(user){
 				$rootScope.user = user;
+				console.log(user);
 				return $location.path('/verify');
 			})
 			.error(function(error){
