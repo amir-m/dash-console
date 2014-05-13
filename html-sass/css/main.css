@@ -192,10 +192,7 @@ section {
     padding: 1em;
     min-height: 8em;
     text-align: left;
-    color: #999999;
-    position: fixed;
-    bottom: 2em;
-    right: 3%; }
+    color: #999999; }
 
 .test {
   margin: 4em auto 8em;
@@ -267,9 +264,6 @@ section {
         padding: 2em;
         vertical-align: middle; }
         .review ul aside section pre {
-          position: relative;
-          right: 0;
-          bottom: 0;
           width: 100%;
           max-width: none; }
 
