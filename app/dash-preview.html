@@ -1,0 +1,25 @@
+<div class="all-dashes" id="sortable">
+	<article>
+		<div class="front">
+			<header>
+				<h1 class="dash-title"><img class="small-icon" src="img/default-small-icon.png">Private Dash • <span>{{privateDash.name}}</span></h1>
+			</header>
+
+			<div class="viewport">
+				<div class="flipsnap" style="width:315px;">
+					<section>
+						<div>
+							<dash-type-text 
+								ng-show="privateDash.type_indicator == 'type_text'">
+							</dash-type-text>
+							<dash-type-image ng-show="privateDash.type_indicator == 'type_image'">
+							</dash-type-image>
+							<dash-type-image-text ng-show="privateDash.type_indicator == 'type_image_text'">
+							</dash-type-image-text>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</article>
+</div>

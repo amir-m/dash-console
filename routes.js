@@ -54,7 +54,7 @@ exports.postLogin = function(req, res){
 
 			if (error) return res.send(error);
 
-			console.log(user);
+			// console.log(user);
 
 			if (!user || user.length == 0) {
 				models.destroySession(req.cookies[cookie_token]);
@@ -99,11 +99,7 @@ exports.postLogin = function(req, res){
 	}
 };
 
-exports.getCheckUserExist = function(req, res, next) {
-	console.log(req.params.email);
-	console.log(models.cipher(req.params.email));
-	res.send(200);
-};
+
 
 exports.putUser = function(req, res, next) {
 
@@ -193,6 +189,20 @@ exports.getVerifyEmail = function(req, res, next) {
 
 			res.redirect('/');
 		})
+	});
+};
+
+exports.getDashnameExist = function(req, res, next) {
+	models.PrivateDash.count({ name: req.params.name}, function(error, result) {
+		
+		if (error) {
+			res.send(500);
+			throw error;
+		}
+		
+		if (result > 0) return res.send(409);
+
+		res.send(200);
 	});
 };
 

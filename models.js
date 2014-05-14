@@ -33,6 +33,26 @@ var BenchUserSchema = new mongoose.Schema({
 	confirmed_at: Date
 });
 
+var PrivateDashSchema = new mongoose.Schema({
+	id: String,
+	user_id: String,
+	name: String,
+	view_count: { type: Number, default: 0 },
+	verified: { type: Boolean, default: false },
+	created_at: Date,
+	verified_at: Date,
+	dashType: String,
+	avatar: String,
+	title: String,
+	description: String,
+	credits: String, 
+	iconLarge: String,
+	iconSmall: String,
+	settingType: String,
+	location: String,
+	settings: []
+});
+
 BenchUserSchema.methods.comparePassword = function(pass) {
 	bcrypt.compare(pass, this.password, function(error, res) {
 
@@ -57,7 +77,7 @@ BenchUserSchema.statics.findUserFromSession = function(session_id, callback) {
 	var self = this;
 
 	redisClients.hgetall('session:'+session_id, function(error, session){
-		console.log(session);
+		// console.log(session);
 		// callback(null, session);
 		if (!session) return callback(401);
 
@@ -71,8 +91,10 @@ BenchUserSchema.statics.findUserFromSession = function(session_id, callback) {
 }
 
 BenchUserSchema.set('toObject', { virtuals: true });
+PrivateDashSchema.set('toObject', { virtuals: true });
 
 var BenchUser = mongoose.model('BenchUser', BenchUserSchema);
+var PrivateDash = mongoose.model('PrivateDash', PrivateDashSchema);
 
 function cipher (text) {	
 	// change the key
@@ -97,17 +119,6 @@ var _objectId = function() {
 	id = crypto.createHash('sha1').update(id).digest('hex');
 	return (new Buffer(id).toString('base64').replace(/=/g, ""));
 };
-
-// var SessionSchema = new mongoose.Schema({
-// 		id: { type: String, required: true },
-// 		user_id: String,
-// 		isActive: { type: Boolean, default: true },
-// 		created_at: { type: Date, default: now() },
-// 		updated_at: Date,
-// 		ip: String,
-// 		user_agent: String
-// 	});
-
 function createSession (session_id, user, ip, agent) {
 
 	redisClients.hmset("session:"+session_id, {
@@ -140,6 +151,7 @@ function destroySession (session_id) {
 };
 
 exports.BenchUser = BenchUser;
+exports.PrivateDash = PrivateDash;
 exports.cipher = cipher;
 exports.decipher = decipher;
 exports.id = _objectId;

@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('dashbenchApp', ['ngRoute'])
-  .config(function ($routeProvider) {
+  .config(function ($routeProvider, $httpProvider) {
+    $httpProvider.defaults.useXDomain = true;
+    delete $httpProvider.defaults.headers.common['X-Requested-With'];
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -71,4 +73,10 @@ angular.module('dashbenchApp', ['ngRoute'])
       .otherwise({
         redirectTo: '/'
       });
-  });
+  })
+.run(function($rootScope){
+  $rootScope.apply = function() {
+    if ($rootScope.$$phase != '$apply' && $rootScope.$$phase != '$digest')
+      $rootScope.$apply();
+  }
+});

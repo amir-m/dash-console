@@ -38,7 +38,7 @@ models.ready(function(){
 //     console.log(replies);
 // });
 
-var port = process.env.PORT || 8000;
+var port = process.env.PORT || 8080;
 server.listen(port, function() {
   console.log("Listening on " + port);
 });

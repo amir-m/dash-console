@@ -1,25 +1,18 @@
-
-<div class="signup col-md-4">
-	<p>Signup</p>
-	<form role="form">
-		<div class="form-group">
-			<input ng-model="name" type="text" class="form-control" placeholder="Name" required>
-		</div>
-		<div class="form-group">
-			<input 
-				ng-model="emailAddress" type = "email" 
-				class = "form-control" 
-				placeholder = "Email Address" 
-				required>
-		</div>
-		<div class="form-group">
-			<input ng-model="password" type="password" 
-			class="form-control" placeholder="Password"
-			required>
-		</div>
-		<div class="checkbox">
-			<input type="checkbox"> Remember Me
-		</div>
-		<button class="btn btn-default" ng-click="signup()">Signup</button>
-	</form>
+<div class="login">
+    <section>
+        <h1>Sign up for dashbench and start builiding dashes right away!</h1>
+    </section>
+    <section>
+        <input type="text" placeholder="name" required ng-model="name">
+    </section>
+    <section>
+        <input type="email" placeholder="email" required ng-model="emailAddress">
+    </section>
+    <section>
+        <input type="password" placeholder="password" required ng-model="password">
+    </section>
+    <section>
+        <button ng-click="signup()">Sign up</button>
+        <small>Already have an account? <a href="#/login">Login here</a></small>
+    </section>
 </div>

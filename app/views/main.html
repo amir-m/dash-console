@@ -1,9 +1,98 @@
-<div class="hero-unit">
-  <h1>'Allo, 'Allo!</h1>
-  <p>You now have</p>
-  <ul>
-      <li ng-repeat="thing in awesomeThings">{{thing}}</li>
-  </ul>
-  <p>installed.</p>
-  <h3>Enjoy coding! - Yeoman</h3>
+<header>
+    <a>Log out</a>
+</header>
+<div class="main-view">
+    <section class="greeting" ng-show="!started">
+        <p>Hey <span>{{user.name}}</span>,</p>
+        <h1>You ready to build a dash together?</h1>
+        <button ng-click="start()">Let's do it!</button>
+    </section>
+
+    <section>
+        <label>Choose a unique name for your dash,</label>
+        <input 
+            type="text" 
+            ng-model="privateDash.name"
+            placeholder="MyUniqueDash" 
+            required 
+            check-dash-unique-name
+            >
+    </section>
+
+    <section class="temps">
+        <label>Pick a template,</label>
+        <a 
+            class="selected" 
+            ng-click="setPrivateType('text', 'type_text')">Text only
+        </a>
+        <a ng-click="setPrivateType('slideshow', 'type_image')" >
+            Image only
+        </a>
+        <a 
+            ng-click="setPrivateType('slideshow', 'type_image_text')">
+            Image & text
+        </a>
+    </section>
+
+    <section>
+        <label>Paste your API end point here</label>
+        <input type="text" placeholder="http://example.com/api?key='your_key_here_if_needed'" required ng-model="apiEndPoint">
+        <button class="get-btn" ng-click="getApi()">GET</button>
+        <pre api-response-object>
+        </pre>
+    </section>
+
+    <section>
+        <h2>Now let's do some extraction magic<br> on our json object and put it in good use</h2>
+    </section>
+
+    <section ng-show="privateDash.type_indicator != 'type_text'">
+        <label>Extract the Hero image object (required)</label>
+        <input type="text" placeholder="object.main_img_url" 
+            ng-model="privateDash.main_img">
+    </section>
+
+    <section ng-show="privateDash.type_indicator != 'type_image'">
+        <label>Extract the Headline object (required)</label>
+        <input type="text" placeholder="object.header"
+            ng-model="privateDash.header">
+    </section>
+    
+    <section ng-show="privateDash.type_indicator == 'type_text'">
+        <label>Extract the Body text object (required)</label>
+        <input type="text" placeholder="object.text"
+            ng-model="privateDash.text">
+    </section>
+    
+    <section>
+        <label>Extract the Footer object (required)</label>
+        <input type="text" placeholder="object.footer"
+            ng-model="privateDash.footer">
+    </section>
+    
+    <section class="test">
+        <h2>That's about it! <br>now Let's see how it looks...</h2>
+        <button ng-click="tryIt()">try it!</button>
+    </section>
+</div>
+
+<div class="modal-view" style="display: none;">
+    <div class="modal">
+        <aside class="dash-box">
+            <dash-preview></dash-preview>
+        </aside>
+        <div class="control">
+            <button class="small no-btn">Needs some adjustments...</button>
+            <button class="small okay" ng-click="submit">
+                <span ng-show="!submitPressed">Looks good! </span>
+                <b ng-show="submitPressed">Submit for review!</b>
+            </button>
+        </div>
+        <div class="confrimation" style="display: none;">
+            <h1>Awesome!</h1>
+            <p>You just made a dash in less than 6 mins...</p>
+            <p>In less than 24hrs you'll get notified that your awesome dash is ready for production. Volah! (;</p>
+            </h1>
+        </div>
+    </div>
 </div>

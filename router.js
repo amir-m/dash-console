@@ -5,9 +5,8 @@ module.exports = function (app, models, notifications, redisClient) {
 
 	app.get('/', routes.index);
 	app.post('/login', routes.postLogin);
-	app.get('/check/:email/exist', routes.getCheckUserExist);
 	app.put('/user', routes.putUser);
-	app.get('/verify/email/:id', routes.getVerifyEmail);
+	app.get('/dashname/exist/:name', routes.getDashnameExist);
 
 	// app.get('/search/users', routes.getSearchUsers);
 	// app.get('/search/channels', routes.getSearchChannels);
