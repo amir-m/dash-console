@@ -13,7 +13,7 @@ models.init(redisClient);
 
 models.ready(function(){
 	notifications.setModel(models);
-	require('./config')(app, express, redisClient);
+	require('./config')(app, express, redisClient, models);
 	require('./router')(app, models, notifications, redisClient);
 
 	// models.User.find({}, function(error, users){

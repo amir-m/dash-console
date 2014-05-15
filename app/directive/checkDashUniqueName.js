@@ -10,7 +10,7 @@ angular.module('dashbenchApp')
 				element.bind('keyup', function(e){
 					e.preventDefault();
 
-					var path = '/dashname/exist/:' + scope.privateDash.name;
+					var path = '/dashname/exist/' + scope.privateDash.dash_title;
 
 					$http.get(path)
 					.success(function(){

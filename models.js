@@ -19,6 +19,48 @@ exports.ready = function (callback) {
 	});
 };
 
+var PrivateDashSchema = new mongoose.Schema({
+
+	id: String,
+	confirmation_id: String,
+	
+	api_end_point: String,
+	dash_title: String,
+	dash_type: String,
+  	type_indicator: String,
+  	header: String,
+  	text: String,
+  	main_img: String,
+  	footer: String,
+  	image_key: String,
+  	container: [],
+  	footer_key: String,
+
+	user_id: String,
+	user_name: String,
+	user_email: String,
+
+	view_count: { type: Number, default: 0 },
+	add_count: { type: Number, default: 0 },
+	iconLarge: { type: String, default: 'www...' },
+	iconSmall: { type: String, default: 'www...' },
+
+	confirmed: { type: Boolean, default: false },
+	created_at: Date,
+	confirmed_at: Date
+});
+
+PrivateDashSchema.methods.json = function(pass) {
+	var u = this.toObject();
+	delete u['_id'];
+	delete u['__v'];
+	delete u['confirmation_id'];
+	delete u['user_name'];
+	delete u['user_email'];
+	return u;
+};
+
+
 var BenchUserSchema = new mongoose.Schema({
 	id: String,
 	confirmation_id: String,
@@ -28,29 +70,10 @@ var BenchUserSchema = new mongoose.Schema({
 	dashes: [],
 	settings: {},
 	dash_count: { type: Number, default: 0 },
+	private_dashes_left: { type: Number, default: 1 },
 	confirmed: { type: Boolean, default: false },
 	created_at: Date,
 	confirmed_at: Date
-});
-
-var PrivateDashSchema = new mongoose.Schema({
-	id: String,
-	user_id: String,
-	name: String,
-	view_count: { type: Number, default: 0 },
-	verified: { type: Boolean, default: false },
-	created_at: Date,
-	verified_at: Date,
-	dashType: String,
-	avatar: String,
-	title: String,
-	description: String,
-	credits: String, 
-	iconLarge: String,
-	iconSmall: String,
-	settingType: String,
-	location: String,
-	settings: []
 });
 
 BenchUserSchema.methods.comparePassword = function(pass) {

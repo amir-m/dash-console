@@ -32,9 +32,11 @@ exports.postLogin = function(req, res){
 
 			if (error) throw error;
 
-			var user = (user && user.length > 0 ? user[0] : null) ;
+			var user = (user && user.length > 0 ? user[0] : null);
 
 			if (user) {
+				var id = models.cipher(user.id);
+				res.cookie(cookie_token, id, { maxAge: cookieMaxAge, httpOnly: true });
 				res.send(user.json());
 			}
 			else {
@@ -50,19 +52,21 @@ exports.postLogin = function(req, res){
 		});
 	}
 	else if (req.cookies && req.cookies[cookie_token]) {
+
 		models.BenchUser.findUserFromSession(req.cookies[cookie_token], function(error, user){
 
 			if (error) return res.send(error);
-
-			// console.log(user);
 
 			if (!user || user.length == 0) {
 				models.destroySession(req.cookies[cookie_token]);
 				res.clearCookie(cookie_token, { path:'/' });
 				return res.send(401);
 			}
-
-			return res.send(user[0].json());
+			user = user[0];
+			var id = models.cipher(user.id);
+			res.cookie(cookie_token, id, { maxAge: cookieMaxAge, httpOnly: true });
+			req.session['user_id'] = user.id;
+			return res.send(user.json());
 		});
 	}
 	else if (req.body.email && req.body.password) {
@@ -157,7 +161,7 @@ exports.putUser = function(req, res, next) {
 			res.send(500);
 			throw error;
 		}
-
+		var id = models.cipher(user.id);
 		res.cookie(cookie_token, id, { maxAge: cookieMaxAge, httpOnly: true })
 		req.session['user_id'] = user.id;
 		res.send(user.json());
@@ -183,12 +187,62 @@ exports.getVerifyEmail = function(req, res, next) {
 		user.save(function(error){
 
 			if (error) throw error;
-
 			req.session['user_id'] = user.id;
 			res.cookie(cookie_token, models.cipher(user.id), { maxAge: cookieMaxAge, httpOnly: true })
 
 			res.redirect('/');
 		})
+	});
+};
+
+exports.putDash = function(req, res, next) {
+
+	req.body.id = models.id();
+
+	async.waterfall([
+		function(callback) {
+			models.BenchUser.findOne({ id: req.session.user_id }, function(error, user){
+				if (error) {
+					res.send(error);
+					throw error;
+				}
+
+				callback(null, user);
+			});
+		},
+		function(user, callback) {
+			
+			req.body.user_id = req.session.user_id;
+			req.body.name = user.name;
+			req.body.email = user.email;
+
+			var pd = models.PrivateDash(req.body);
+
+			pd.save(function(error){
+				// TODO: Handle
+				if (error) {
+					res.send(error);
+					throw error;
+				}
+				res.send(pd.json());
+				callback(null, pd, user);
+			})
+		},
+		function(pd, user, callback) {
+			user.dashes.push(pd.json());
+			user.dash_count++;
+			user.private_dashes_left--;
+			user.save(function(error){
+				if (error) {
+					res.send(error);
+					throw error;
+				}
+				callback(null, pd, user);
+			});
+		}
+	], function(pd, user, callback){
+		// TODO: notify us to review the dash...
+		
 	});
 };
 

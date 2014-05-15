@@ -13,7 +13,7 @@ angular.module('dashbenchApp')
 			another_key: "another_value"
 		};
 
-		$scope.privateDash = {
+		$scope.privateDash = $scope.user.dashes.length > 0 ? $scope.user.dashes[0] : {
 			dash_type: 'text',
 			type_indicator: 'type_text'
 		};
@@ -28,19 +28,11 @@ angular.module('dashbenchApp')
 			$scope.privateDash['type_indicator'] = id;
 		};
 
-		$scope.submit = function() {
-			if (!$scope.submitPressed) {
-				return $scope.submitPressed = true;
-			}
-			// TODO: submit functionality using an http request, $scope.submitPressed = false
-		};
-
 		$scope.getApi = function() {
 
 			$.ajax({
 				"url": $scope.apiEndPoint,
 				"dataType": "jsonp",
-				"host": "api.dribbble.com",
 				"crossDomain": true,
 				"success": function(data, status, headers){
 					// TODO: check headers.status
@@ -53,36 +45,87 @@ angular.module('dashbenchApp')
 
 		$scope.tryIt = function() {
 
-			if ($scope.privateDash.type_indicator == 'type_image' 
-				|| $scope.privateDash.type_indicator == 'type_image_text') {
+			$scope.privateDash.api_end_point = $scope.apiEndPoint ? $scope.apiEndPoint : $scope.privateDash.api_end_point;
+
+			getKeys();
+		};
+
+		$scope.submit = function() {
+		
+			if (!$scope.submitPressed) {
+				return $scope.submitPressed = true;
+			}
+			
+			$('.modal-view').hide();
+
+			$scope.privateDash.created_at = new Date();
+
+			$http.put('/dash', angular.toJson($scope.privateDash))
+			.success(function(){
+				$scope.user.private_dashes_left--;
+				$scope.submitPressed = false;
+			})
+			.error(function(){
+				// TODO: Handle error
+			});
+		};
+
+		$scope.showMe = function() {
+
+			$.ajax({
+				"url": $scope.privateDash.api_end_point,
+				"dataType": "jsonp",
+				"crossDomain": true,
+				"success": function(data, status, headers){
+					// TODO: check headers.status
+					// console.log(headers.status)
+					$scope.apiResponseJson = data;
+					getKeys();
+					$scope.apply();
+				}
+			});
+		};
+
+		function getKeys() {
+
+			if ($scope.privateDash.main_img && ($scope.privateDash.type_indicator == 'type_image' 
+				|| $scope.privateDash.type_indicator == 'type_image_text')) {
 
 				var tmp = $scope.privateDash.main_img.split('.');
-				$scope.privateDash.container = tmp[0];
-				$scope.privateDash.main_image_key = tmp[1];
-				
+				$scope.privateDash.image_key = tmp[ tmp.length - 1 ];
+				tmp.splice( tmp.length - 1, 1 );
+				// tmp = tmp.join('.');
+				$scope.privateDash.container = tmp;
 			}
 
-			if ($scope.privateDash.type_indicator == 'type_text' 
-				|| $scope.privateDash.type_indicator == 'type_image_text') {
+			if ($scope.privateDash.header && ($scope.privateDash.type_indicator == 'type_text' 
+				|| $scope.privateDash.type_indicator == 'type_image_text')) {
 				
 				tmp = $scope.privateDash.header.split('.');
-				$scope.privateDash.container = tmp[0];
-				$scope.privateDash.header_key = tmp[1];
+				$scope.privateDash.header_key = tmp[ tmp.length - 1 ];
+				tmp.splice( tmp.length - 1, 1 );
+				// tmp = tmp.join('.');
+				$scope.privateDash.container = tmp;
 			}
 
-			if ($scope.privateDash.type_indicator == 'type_text') {
+			if ($scope.privateDash.text && $scope.privateDash.type_indicator == 'type_text') {
 				
 				tmp = $scope.privateDash.text.split('.');
-				$scope.privateDash.container = tmp[0];
-				$scope.privateDash.text_key = tmp[1];
+				$scope.privateDash.text_key = tmp[ tmp.length - 1 ];
+				tmp.splice( tmp.length - 1, 1 );
+				// tmp = tmp.join('.');
+				$scope.privateDash.container = tmp;
 			}
 
-
-			tmp = $scope.privateDash.footer.split('.');
-			$scope.privateDash.container = tmp[0];
-			$scope.privateDash.footer_key = tmp[1];
-
-		};
+			if ($scope.privateDash.footer) {
+				tmp = $scope.privateDash.footer.split('.');
+				$scope.privateDash.footer_key = tmp[ tmp.length - 1 ];
+				tmp.splice( tmp.length - 1, 1 );
+				// tmp = tmp.join('.');
+				$scope.privateDash.container = tmp;
+			}
+			$scope.$broadcast('apiResponseJson:change');
+		}
 
 		$(".temps a").click(function(e){
 			e.preventDefault();
@@ -90,9 +133,8 @@ angular.module('dashbenchApp')
 			$(this).addClass("selected");
 		});
 
-		$(".test button, .control .no-btn").click(function(){
+		$(".test button, .control .no-btn, .show-modal").click(function(){
 			$(".modal-view").toggle();
 		});
-
 	}
 ]);
