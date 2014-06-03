@@ -3,15 +3,20 @@
 </header>
 <div class="main-view" >
 
-    <div ng-show="user.private_dashes_left == 0">
+    <div ng-show="user.dashes.length > 0">
         <section class="greeting" >
             <p>Hey <span>{{user.name}}</span>,</p>
-            <h1>Your dash is under review.</h1>
-            <button class="show-modal" ng-click="showMe()">Show me a glimps!</button>
+                <h1>You've built  
+                    <span ng-show="user.dashes.length > 0" ng-repeat=" dash in user.dashes">
+                        <b><a ng-click="showMe(dash)">{{dash.dash_title}}</a>, </b>
+                    </span>
+                </h1>
+            <!-- <button class="show-modal" ng-click="showMe()">Show me a glimps!</button> -->
         </section>
     </div>
 
     <div ng-show="user.private_dashes_left > 0">
+
         <section class="greeting" ng-show="!started">
             <p>Hey <span>{{user.name}}</span>,</p>
             <h1>You ready to build a dash together?</h1>

@@ -14,10 +14,8 @@ angular.module('dashbenchApp')
 			key: "value",
 			another_key: "another_value"
 		};
-		
-		console.log($scope.privateDash);
-
-		$scope.privateDash = $scope.user.dashes.length > 0 ? $scope.user.dashes[0] : {
+	
+		$scope.privateDash = {
 			dash_type: 'text',
 			type_indicator: 'type_text'
 		};
@@ -71,19 +69,36 @@ angular.module('dashbenchApp')
 			});
 		};
 
-		$scope.showMe = function() {
+		$scope.showMe = function(dash) {
+			
+			$scope.privateDash = dash;
 			$.ajax({
-				"url": $scope.privateDash.api_end_point,
-				"dataType": "jsonp",
+				"url": 'http://requestor-env.elasticbeanstalk.com/call?'+dash.api_end_point,
+				"dataType": "json",
 				"crossDomain": true,
 				"success": function(data, status, headers){
 					// TODO: check headers.status
 					// console.log(headers.status)
 					$scope.apiResponseJson = data;
-					getKeys();
+					getKeys(data);
+					// console.log(data);
 					$scope.apply();
+				}, 
+				"error": function(error) {
+					throw error;
 				}
 			});
+			// $.ajax({
+			// 	"url": $scope.privateDash.api_end_point,
+			// 	"crossDomain": true,
+			// 	"success": function(data, status, headers){
+			// 		// TODO: check headers.status
+			// 		// console.log(headers.status)
+			// 		// $scope.apiResponseJson = data;
+			// 		getKeys();
+			// 		$scope.apply();
+			// 	}
+			// });
 		};
 
 		function getKeys() {
@@ -109,6 +124,7 @@ angular.module('dashbenchApp')
 				$scope.privateDash.footer_key = $scope.privateDash.footer;
 			}
 			console.log($scope.privateDash);
+			$scope.apply();
 			$scope.$broadcast('apiResponseJson:change');
 		}
 
