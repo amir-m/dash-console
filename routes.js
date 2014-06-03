@@ -21,6 +21,7 @@ exports.index = function(req, res, next) {
 
 exports.postLogin = function(req, res){
 
+
 	// SECURITY TODO: remove this code and make it more secure...)
 
 	if (req.session && req.session.user_id) {
@@ -45,6 +46,7 @@ exports.postLogin = function(req, res){
 				// }
 				req.session.destroy(function(error) {
 					// TODO: handle error
+					res.clearCookie(cookie_token, { path:'/' });
 					return res.send(401);
 				});
 			}
@@ -102,7 +104,16 @@ exports.postLogin = function(req, res){
 	}
 };
 
+exports.postLogout = function(req, res){
 
+	if (!req.cookies[cookie_token] || !req.session) return res.send(401);
+	
+	models.destroySession(req.cookies[cookie_token]);
+	req.session.destroy(function(error) {
+		res.clearCookie(cookie_token, { path:'/' });
+		return res.send(200);
+	});
+};
 
 exports.putUser = function(req, res, next) {
 

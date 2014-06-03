@@ -110,7 +110,7 @@ section {
 	margin: 2em auto;
 	width: 80%;
 	&.greeting {
-		margin: 20% auto 8em;
+		margin: 14em auto 8em;
 		font-size: 1.4em;
 		h1 {
 			margin: 0.3em auto 1.5em;
@@ -139,7 +139,6 @@ section {
 		width: 60%;
 		font-size: 0.8em;
 		margin: 0.3em auto 1em;
-		text-transform: none;
 	}
 
 	pre {
@@ -152,7 +151,6 @@ section {
 		overflow: scroll;
 		text-align: left;
 		color: $light;
-		text-decoration: none;
 	}
 }
 
@@ -273,7 +271,6 @@ section {
 	p {
 		margin-top: 0;
 		margin-bottom: 0.5em;
-		text-align: left;
 	}
 	a:hover {
 		color: #fff;

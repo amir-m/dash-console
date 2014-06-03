@@ -24,6 +24,7 @@ var PrivateDashSchema = new mongoose.Schema({
 	id: String,
 	confirmation_id: String,
 	
+	dashType: { type: String, default: 'privateDash'},
 	api_end_point: String,
 	dash_title: String,
 	dash_type: String,
@@ -33,7 +34,7 @@ var PrivateDashSchema = new mongoose.Schema({
   	main_img: String,
   	footer: String,
   	image_key: String,
-  	container: [],
+  	container: String,
   	footer_key: String,
 
 	user_id: String,
@@ -42,8 +43,6 @@ var PrivateDashSchema = new mongoose.Schema({
 
 	view_count: { type: Number, default: 0 },
 	add_count: { type: Number, default: 0 },
-	iconLarge: { type: String, default: 'www...' },
-	iconSmall: { type: String, default: 'www...' },
 
 	confirmed: { type: Boolean, default: false },
 	created_at: Date,
@@ -142,6 +141,7 @@ var _objectId = function() {
 	id = crypto.createHash('sha1').update(id).digest('hex');
 	return (new Buffer(id).toString('base64').replace(/=/g, ""));
 };
+
 function createSession (session_id, user, ip, agent) {
 
 	redisClients.hmset("session:"+session_id, {
@@ -155,14 +155,17 @@ function createSession (session_id, user, ip, agent) {
 	});
 };
 
+function destroySession (session_id) {
+
+	redisClients.del("session:"+session_id);
+};
+
 function getSession (session_id, callback) {
-	console.log(session_id)
 	redisClients.hgetall("session:"+session_id, callback);
 };
 
 function getAndUpdateSession (session_id, callback) {
 	redisClients.hgetall('sessions:'+session_id, function(error, session){
-		console.log(session);
 		callback(session);
 		// todo... update
 	});
@@ -181,3 +184,4 @@ exports.id = _objectId;
 exports.getSession = getSession;
 exports.createSession = createSession;
 exports.getAndUpdateSession = getAndUpdateSession;
+exports.destroySession = destroySession;
