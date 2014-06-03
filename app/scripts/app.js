@@ -75,6 +75,7 @@ angular.module('dashbenchApp', ['ngRoute'])
       });
   })
 .run(function($rootScope){
+  window._tmpt = '';
   $rootScope.apply = function() {
     if ($rootScope.$$phase != '$apply' && $rootScope.$$phase != '$digest')
       $rootScope.$apply();

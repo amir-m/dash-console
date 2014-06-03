@@ -5,21 +5,16 @@ angular.module('dashbenchApp')
     return {
       templateUrl: 'dash-type-image.html',
 		restrict: 'E',
-      link: function postLink(scope, element, attrs) {
-      	var container;
+      link: function postLink(scope, element, attrs) {      
+
       	scope.$on('apiResponseJson:change', function(){
-      		container = scope.apiResponseJson;
-	      	if (Object.prototype.toString.call(scope.privateDash.container) == '[object Array]') {
-	      		for (var i = 0; i < scope.privateDash.container.length; ++i) {
-	      			container = container[scope.privateDash.container[i]];
-	      		}
-	      	}
-	      	else {
-	      		container = scope.privateDash.container;
-	      	}
-	      	if (!container) return;
-	      	scope.image = container[0][scope.privateDash.image_key];
-	      	scope.footer = container[0][scope.privateDash.footer_key];
+      		var footer = scope.privateDash.container + '[0].' + scope.privateDash.footer_key;
+      		var image = scope.privateDash.container + '[0].' + scope.privateDash.image_key;
+      		eval('image = scope.apiResponseJson.'+image+';');
+	      	eval('footer = scope.apiResponseJson.'+footer+';');
+
+	      	$('#'+scope.privateDash.id + ' .hero').attr('src', image);
+	      	$('#'+scope.privateDash.id + ' .small').text(footer);
       	});
       }
     };

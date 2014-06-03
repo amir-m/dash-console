@@ -21,7 +21,6 @@ exports.index = function(req, res, next) {
 
 exports.postLogin = function(req, res){
 
-
 	// SECURITY TODO: remove this code and make it more secure...)
 
 	if (req.session && req.session.user_id) {

@@ -4,7 +4,9 @@ angular.module('dashbenchApp')
 .controller('MainCtrl', [
 	'$scope',
 	'$http',
-	function ($scope, $http) {
+	'$location',
+	'$rootScope',
+	function ($scope, $http, $location, $rootScope) {
 		
 		$scope.started = false;
 		$scope.submitPressed = false;
@@ -46,8 +48,8 @@ angular.module('dashbenchApp')
 		$scope.tryIt = function() {
 
 			$scope.privateDash.api_end_point = $scope.apiEndPoint ? $scope.apiEndPoint : $scope.privateDash.api_end_point;
-
 			getKeys();
+			$scope.apply();
 		};
 
 		$scope.submit = function() {
@@ -91,41 +93,36 @@ angular.module('dashbenchApp')
 			if ($scope.privateDash.main_img && ($scope.privateDash.type_indicator == 'type_image' 
 				|| $scope.privateDash.type_indicator == 'type_image_text')) {
 
-				var tmp = $scope.privateDash.main_img.split('.');
-				$scope.privateDash.image_key = tmp[ tmp.length - 1 ];
-				tmp.splice( tmp.length - 1, 1 );
-				// tmp = tmp.join('.');
-				$scope.privateDash.container = tmp;
+				$scope.privateDash.image_key = $scope.privateDash.main_img;
 			}
 
 			if ($scope.privateDash.header && ($scope.privateDash.type_indicator == 'type_text' 
 				|| $scope.privateDash.type_indicator == 'type_image_text')) {
 				
-				tmp = $scope.privateDash.header.split('.');
-				$scope.privateDash.header_key = tmp[ tmp.length - 1 ];
-				tmp.splice( tmp.length - 1, 1 );
-				// tmp = tmp.join('.');
-				$scope.privateDash.container = tmp;
+				$scope.privateDash.header_key = $scope.privateDash.header;
 			}
 
 			if ($scope.privateDash.text && $scope.privateDash.type_indicator == 'type_text') {
 				
-				tmp = $scope.privateDash.text.split('.');
-				$scope.privateDash.text_key = tmp[ tmp.length - 1 ];
-				tmp.splice( tmp.length - 1, 1 );
-				// tmp = tmp.join('.');
-				$scope.privateDash.container = tmp;
+				$scope.privateDash.text_key = $scope.privateDash.text;
 			}
 
 			if ($scope.privateDash.footer) {
-				tmp = $scope.privateDash.footer.split('.');
-				$scope.privateDash.footer_key = tmp[ tmp.length - 1 ];
-				tmp.splice( tmp.length - 1, 1 );
-				// tmp = tmp.join('.');
-				$scope.privateDash.container = tmp;
+				$scope.privateDash.footer_key = $scope.privateDash.footer;
 			}
 			$scope.$broadcast('apiResponseJson:change');
 		}
+
+		$scope.logout = function() {
+			$http.post('/logout')
+			.success(function(){
+				$rootScope.user = null;
+				$location.path('/login');
+			})
+			.error(function(){
+				throw error;
+			})
+		};
 
 		$(".temps a").click(function(e){
 			e.preventDefault();
