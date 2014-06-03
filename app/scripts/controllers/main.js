@@ -110,6 +110,7 @@ angular.module('dashbenchApp')
 			if ($scope.privateDash.footer) {
 				$scope.privateDash.footer_key = $scope.privateDash.footer;
 			}
+			console.log($scope.privateDash);
 			$scope.$broadcast('apiResponseJson:change');
 		}
 
