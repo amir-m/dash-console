@@ -7,7 +7,9 @@ angular.module('dashbenchApp')
 	  '$http',
 	  '$location',
 	function($rootScope, $q, $http, $location) {
+
 		return function() {
+			
             var deferred = $q.defer();
             
             var path = $rootScope.prev || '/';

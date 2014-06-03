@@ -14,6 +14,8 @@ angular.module('dashbenchApp')
 			key: "value",
 			another_key: "another_value"
 		};
+		
+		console.log($scope.privateDash);
 
 		$scope.privateDash = $scope.user.dashes.length > 0 ? $scope.user.dashes[0] : {
 			dash_type: 'text',
@@ -23,7 +25,6 @@ angular.module('dashbenchApp')
 		$scope.start = function() {
 			$scope.started = true;
 		};
-
 
 		$scope.setPrivateType = function(type, id) {
 			$scope.privateDash['dash_type'] = type;
@@ -46,14 +47,12 @@ angular.module('dashbenchApp')
 		};
 
 		$scope.tryIt = function() {
-
 			$scope.privateDash.api_end_point = $scope.apiEndPoint ? $scope.apiEndPoint : $scope.privateDash.api_end_point;
 			getKeys();
 			$scope.apply();
 		};
 
 		$scope.submit = function() {
-		
 			if (!$scope.submitPressed) {
 				return $scope.submitPressed = true;
 			}
@@ -73,7 +72,6 @@ angular.module('dashbenchApp')
 		};
 
 		$scope.showMe = function() {
-
 			$.ajax({
 				"url": $scope.privateDash.api_end_point,
 				"dataType": "jsonp",
