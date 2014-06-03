@@ -12,9 +12,9 @@ angular.module('dashbenchApp')
 	      	var footer = scope.privateDash.container + '[0].' + scope.privateDash.footer_key;
       		var text = scope.privateDash.container + '[0].' + scope.privateDash.text_key;
       		var header = scope.privateDash.container + '[0].' + scope.privateDash.header_key;
-      		eval('text = scope.apiResponseJson.'+text+';');
-	      	eval('footer = scope.apiResponseJson.'+footer+';');
-	      	eval('header = scope.apiResponseJson.'+header+';');
+      		eval('scope.text = scope.apiResponseJson.'+text+';');
+	      	eval('scope.footer = scope.apiResponseJson.'+footer+';');
+	      	eval('scope.header = scope.apiResponseJson.'+header+';');
 
 	      	$('#'+scope.privateDash.id + ' .body-text').text(text);
 	      	$('#'+scope.privateDash.id + ' .small').text(footer);

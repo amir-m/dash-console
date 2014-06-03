@@ -16,9 +16,9 @@ angular.module('dashbenchApp')
 	      	var footer = scope.privateDash.container + '[0].' + scope.privateDash.footer_key;
       		var image = scope.privateDash.container + '[0].' + scope.privateDash.image_key;
       		var header = scope.privateDash.container + '[0].' + scope.privateDash.header_key;
-      		eval('image = scope.apiResponseJson.'+image+';');
-	      	eval('footer = scope.apiResponseJson.'+footer+';');
-	      	eval('header = scope.apiResponseJson.'+header+';');
+      		eval('scope.image = scope.apiResponseJson.'+image+';');
+	      	eval('scope.footer = scope.apiResponseJson.'+footer+';');
+	      	eval('scope.header = scope.apiResponseJson.'+header+';');
 
 	      	$('#'+scope.privateDash.id + ' .hero').attr('src', image);
 	      	$('#'+scope.privateDash.id + ' .small').text(footer);
