@@ -4,10 +4,13 @@ module.exports = function (app, models, notifications, redisClient) {
 	routes.init(models, notifications, redisClient);
 
 	app.get('/', routes.index);
+	app.get('/dashname/exist/:name', routes.getDashnameExist);
+	app.get('/verify/email/:id', routes.getVerifyEmail);
+
 	app.post('/login', routes.postLogin);
 	app.post('/logout', routes.postLogout);
+
 	app.put('/user', routes.putUser);
-	app.get('/dashname/exist/:name', routes.getDashnameExist);
 	app.put('/dash', routes.putDash);
 
 	// app.get('/search/users', routes.getSearchUsers);

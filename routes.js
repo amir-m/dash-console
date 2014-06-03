@@ -180,6 +180,7 @@ exports.putUser = function(req, res, next) {
 };
 
 exports.getVerifyEmail = function(req, res, next) {
+	
 	models.BenchUser.findOne({ 
 		confirmation_id: req.params.id, 
 		confirmed: false 
