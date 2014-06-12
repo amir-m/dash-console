@@ -39,22 +39,29 @@
             <label>Pick a template,</label>
             <a 
                 class="selected" 
-                ng-click="setPrivateType('text', 'type_text')">Text only
+                ng-click="setPrivateType('text')">Text only
             </a>
-            <a ng-click="setPrivateType('slideshow', 'type_image')" >
+            <a ng-click="setPrivateType('image')" >
                 Image only
             </a>
-            <a 
-                ng-click="setPrivateType('slideshow', 'type_image_text')">
+            <!-- <a 
+                ng-click="setPrivateType('slideshow', 'image_text')">
                 Image & text
-            </a>
+            </a> -->
         </section>
 
         <section>
             <label>Paste your API end point here</label>
+            <!-- <input
+                style="text-transform: none;" 
+                type="text" 
+                placeholder="http://example.com/api?key='your_key_here_if_needed'" 
+                required ng-model="apiEndPoint"> -->
             <input
                 style="text-transform: none;" 
-                type="text" placeholder="http://example.com/api?key='your_key_here_if_needed'" required ng-model="apiEndPoint">
+                type="text" 
+                placeholder="http://example.com/api?key='your_key_here_if_needed'" 
+                required ng-model="privateDash.source_uri">
             <button class="get-btn" ng-click="getApi()">GET</button>
             <pre api-response-object style="text-transform: none;">
             </pre>
@@ -69,31 +76,31 @@
             <input
                 style="text-transform: none;" 
                 type="text" placeholder="object.array" 
-                ng-model="privateDash.container">
+                ng-model="privateDash.data_container">
         </section>
 
-        <section ng-show="privateDash.type_indicator != 'type_text'">
+        <section ng-show="privateDash.type != 'text'">
             <label>Extract the Hero image object (required)</label>
             <input
                 style="text-transform: none;" 
                 type="text" placeholder="object.main_img_url" 
-                ng-model="privateDash.main_img">
+                ng-model="hero_comp.main_img">
         </section>
 
-        <section ng-show="privateDash.type_indicator != 'type_image'">
+        <section ng-show="privateDash.type != 'image'">
             <label>Extract the Headline object (required)</label>
             <input
                 style="text-transform: none;" 
                 type="text" placeholder="object.header"
-                ng-model="privateDash.header">
+                ng-model="desc_comp.header">
         </section>
         
-        <section ng-show="privateDash.type_indicator == 'type_text'">
+        <section ng-show="privateDash.type == 'text'">
             <label>Extract the Body text object (required)</label>
             <input
                 style="text-transform: none;" 
                 type="text" placeholder="object.text"
-                ng-model="privateDash.text">
+                ng-model="desc_comp.text">
         </section>
         
         <section>
@@ -101,7 +108,7 @@
             <input
                 style="text-transform: none;" 
                 type="text" placeholder="object.footer"
-                ng-model="privateDash.footer">
+                ng-model="footer_comp.footer">
         </section>
         
         <section class="test">
@@ -118,14 +125,14 @@
         </aside>
         <div class="control">
             <div ng-show="user.private_dashes_left > 0">
-                <button class="small no-btn">Needs some adjustments...</button>
+                <button class="small no-btn" ng-click="dismissModal()">Needs some adjustments...</button>
                 <button class="small okay" ng-click="submit()">
                     <span ng-show="!submitPressed">Looks good!</span>
                     <b ng-show="submitPressed">Submit for review!</b>
                 </button>
             </div>
             <div ng-show="user.private_dashes_left == 0">
-                <button class="small no-btn">Ok!</button>
+                <button class="small no-btn" ng-click="dismissModal()">Ok!</button>
             </div>
         </div>
         <div class="confrimation" style="display: none;">
@@ -135,4 +142,7 @@
             </h1>
         </div>
     </div>
+</div>
+<div class="spinner" style="display:none">
+    <img src="https://s3.amazonaws.com/s3.dashbook.co/dbkapp/img/spinner-icon.png">
 </div>

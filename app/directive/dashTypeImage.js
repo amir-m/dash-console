@@ -8,15 +8,19 @@ angular.module('dashbenchApp')
       link: function postLink(scope, element, attrs) {      
 
       	scope.$on('apiResponseJson:change', function(){
+
+          if ('type_image' != scope.privateDash.type_indicator) return;
+          
       		var footer = scope.privateDash.container + '[0].' + scope.privateDash.footer_key;
-      		var image = scope.privateDash.container + '[0].' + scope.privateDash.image_key;
-      		eval('scope.image = scope.apiResponseJson.'+image+';');
+      		var _image = scope.privateDash.container + '[0].' + scope.privateDash.image_key;
+      		eval('scope.image = scope.apiResponseJson.'+_image+';');
 	      	eval('scope.footer = scope.apiResponseJson.'+footer+';');
-
-	      	$('#'+scope.privateDash.id + ' .hero').attr('src', image);
-	      	$('#'+scope.privateDash.id + ' .small').text(footer);
-
-          console.log(scope.footer, scope.image)
+          setTimeout(function(){
+            $('#'+scope.privateDash.id + ' .hero').attr('src', scope.image);
+            $('#'+scope.privateDash.id + ' .small').text(scope.footer);
+            console.log(scope.footer, scope.image)
+            // scope.apply();
+          }, 1);
       	});
       }
     };

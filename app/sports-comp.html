@@ -1,0 +1,26 @@
+<a class="gotosource comp-wrapper" href="{{content.resource_uri}}">
+    <div class="sports-comp table centered">
+        <div class="cell small-cell">
+            <div class="circular-img">
+                <span style="background-image: url({{content.components.sports_comp.home_team_flag}})"></span>
+            </div>
+            <small>
+                <b>{{content.components.sports_comp.home_team}}</b>
+            </small>
+        </div>
+        <div class="cell large-cell  middle-aligned">
+            <h1>
+                {{content.components.sports_comp.score}}
+            </h1>
+            <p class="grey"><small><b>{{content.components.sports_comp.status}}</b></small></p>
+        </div>
+
+
+        <div class="cell small-cell">
+            <div class="circular-img">
+                <span style="background-image: url({{content.components.sports_comp.away_team_flag}})"></span>
+            </div>
+            <small><b>{{content.components.sports_comp.away_team}}</b></small>
+        </div>
+    </div>
+</a>

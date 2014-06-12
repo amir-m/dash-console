@@ -227,7 +227,9 @@ exports.putDash = function(req, res, next) {
 			req.body.name = user.name;
 			req.body.email = user.email;
 
-			var pd = models.PrivateDash(req.body);
+			console.log(req.body);
+			return res.send(req.body);
+			var pd = new models.PrivateDash(req.body);
 
 			pd.save(function(error){
 				// TODO: Handle
@@ -259,7 +261,6 @@ exports.putDash = function(req, res, next) {
 
 exports.getDashnameExist = function(req, res, next) {
 	models.PrivateDash.count({ name: req.params.name}, function(error, result) {
-		
 		if (error) {
 			res.send(500);
 			throw error;

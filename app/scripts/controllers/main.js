@@ -11,41 +11,84 @@ angular.module('dashbenchApp')
 		$scope.started = false;
 		$scope.submitPressed = false;
 		$scope.apiResponseJson = {
-			key: "value",
-			another_key: "another_value"
+			data: [
+				{
+					key: "value",
+					another_key: "another_value"
+				}
+			]
+		};
+
+		$scope.hero_comp = {
+			main_img: ''
+		};
+
+		$scope.desc_comp = {
+			header: '',
+			text: ''
+		};
+
+		$scope.src_comp = {
+			url: ''
+		};
+
+		$scope.footer_comp = {
+			footer: ''
 		};
 	
 		$scope.privateDash = {
-			dash_type: 'text',
-			type_indicator: 'type_text'
+			type: 'text',
+			content_type: ['src_comp', 'desc_comp', 'footer_comp'],
+			has_settings: false,
+			mapper_key: '',
+			mapper_value: ['url'],
+			source_uri: ''
 		};
 
 		$scope.start = function() {
 			$scope.started = true;
+			$scope.privateDash = {
+				dash_type: 'text',
+				type_indicator: 'type_text'
+			};
+			$scope.apiResponseJson = null;
 		};
 
-		$scope.setPrivateType = function(type, id) {
-			$scope.privateDash['dash_type'] = type;
-			$scope.privateDash['type_indicator'] = id;
+		$scope.setPrivateType = function(type) {
+
+			
+			$scope.privateDash['type'] = type;
+
+			if (type == 'image') {
+				$scope.privateDash['content_type'] = ['src_comp', 'hero_comp', 'footer_comp'];
+				$scope.privateDash.mapper_key = ['src_comp.resource_uri', 'hero_comp.main_img', 'footer_comp.footer'];
+			}
+			else {
+				$scope.privateDash['content_type'] = ['src_comp', 'desc_comp', 'footer_comp'];
+				$scope.privateDash.mapper_key = ['src_comp.resource_uri', 'desc_comp.header', 'desc_comp.text', 'footer_comp.footer'];
+			}
 		};
 
 		$scope.getApi = function() {
-
+			$(".spinner").show();
 			$.ajax({
-				"url": $scope.apiEndPoint,
-				"dataType": "jsonp",
+				"url": 'http://requestor-env.elasticbeanstalk.com/call?' + $scope.privateDash.source_uri,
+				"dataType": "json",
 				"crossDomain": true,
 				"success": function(data, status, headers){
 					// TODO: check headers.status
-					// console.log(headers.status)
+					$(".spinner").hide();
 					$scope.apiResponseJson = data;
+
 					$scope.apply();
 				}
 			});
 		};
 
 		$scope.tryIt = function() {
-			$scope.privateDash.api_end_point = $scope.apiEndPoint ? $scope.apiEndPoint : $scope.privateDash.api_end_point;
+			// $(".spinner").show();
+			$scope.privateDash.source_uri = $scope.privateDash.source_uri;
+			// $scope.privateDash.api_end_point = $scope.apiEndPoint ? $scope.apiEndPoint : $scope.privateDash.api_end_point;
 			getKeys();
 			$scope.apply();
 		};
@@ -70,11 +113,10 @@ angular.module('dashbenchApp')
 		};
 
 		$scope.showMe = function(dash) {
-			
+			$(".spinner").show();
 			$scope.privateDash = dash;
 			$.ajax({
-				"url": 'http://requestor-env.elasticbeanstalk.com/call?'+dash.api_end_point,
-				"dataType": "json",
+				"url": 'http://requestor-env.elasticbeanstalk.com/call?'+dash.source_uri,
 				"crossDomain": true,
 				"success": function(data, status, headers){
 					// TODO: check headers.status
@@ -83,6 +125,7 @@ angular.module('dashbenchApp')
 					getKeys(data);
 					// console.log(data);
 					$scope.apply();
+					$(".spinner").hide();
 				}, 
 				"error": function(error) {
 					throw error;
@@ -103,29 +146,22 @@ angular.module('dashbenchApp')
 
 		function getKeys() {
 
-			if ($scope.privateDash.main_img && ($scope.privateDash.type_indicator == 'type_image' 
-				|| $scope.privateDash.type_indicator == 'type_image_text')) {
-
-				$scope.privateDash.image_key = $scope.privateDash.main_img;
+			if ($scope.privateDash.type == 'image') {
+				$scope.privateDash.mapper_value = ['url'];
+				$scope.privateDash.mapper_value.push($scope.hero_comp.main_img);
+			}
+			else {
+				$scope.privateDash.mapper_value = ['url'];
+				$scope.privateDash.mapper_value.push($scope.desc_comp.header); 
+				$scope.privateDash.mapper_value.push($scope.desc_comp.text);
 			}
 
-			if ($scope.privateDash.header && ($scope.privateDash.type_indicator == 'type_text' 
-				|| $scope.privateDash.type_indicator == 'type_image_text')) {
-				
-				$scope.privateDash.header_key = $scope.privateDash.header;
-			}
+			$scope.privateDash.mapper_value.push($scope.footer_comp.footer);
 
-			if ($scope.privateDash.text && $scope.privateDash.type_indicator == 'type_text') {
-				
-				$scope.privateDash.text_key = $scope.privateDash.text;
-			}
-
-			if ($scope.privateDash.footer) {
-				$scope.privateDash.footer_key = $scope.privateDash.footer;
-			}
-			console.log($scope.privateDash);
 			$scope.apply();
-			$scope.$broadcast('apiResponseJson:change');
+			if (!$scope.privateDash.id) $scope.privateDash.id = '_private_dash_id';
+			$scope.$broadcast('show_dash');
+			$(".modal-view").toggle();
 		}
 
 		$scope.logout = function() {
@@ -139,14 +175,23 @@ angular.module('dashbenchApp')
 			})
 		};
 
+		$scope.dismissModal = function() {
+			$(".spinner").hide();
+			$(".modal-view").hide();
+		};
+
 		$(".temps a").click(function(e){
 			e.preventDefault();
 			$(".temps a").removeClass("selected");
 			$(this).addClass("selected");
 		});
 
-		$(".test button, .control .no-btn, .show-modal").click(function(){
-			$(".modal-view").toggle();
+		$scope.$watch('apiResponseJson', function(){
+			$scope.$broadcast('apiResponseJson:change');
 		});
+
+		// $(".test button, .control .no-btn, .show-modal").click(function(){
+		// 	$(".modal-view").toggle();
+		// });
 	}
 ]);
