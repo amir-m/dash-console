@@ -26,7 +26,6 @@
             <label>Choose a unique name for your dash,</label>
             <input
                 style="text-transform: none;" 
-                
                 type="text" 
                 ng-model="privateDash.dash_title"
                 placeholder="MyUniqueDash" 
@@ -79,7 +78,16 @@
                 ng-model="privateDash.data_container">
         </section>
 
-        <section ng-show="privateDash.type != 'text'">
+        <section>
+            <label>Extract the source link </label>
+            <input
+                style="text-transform: none;" 
+                type="text" 
+                placeholder="object.link"
+                ng-model="src_comp.resource_uri">
+        </section>
+
+        <section ng-show="privateDash.dash_type != 'text'">
             <label>Extract the Hero image object (required)</label>
             <input
                 style="text-transform: none;" 
@@ -87,7 +95,7 @@
                 ng-model="hero_comp.main_img">
         </section>
 
-        <section ng-show="privateDash.type != 'image'">
+        <section ng-show="privateDash.dash_type != 'image'">
             <label>Extract the Headline object (required)</label>
             <input
                 style="text-transform: none;" 
@@ -95,7 +103,7 @@
                 ng-model="desc_comp.header">
         </section>
         
-        <section ng-show="privateDash.type == 'text'">
+        <section ng-show="privateDash.dash_type == 'text'">
             <label>Extract the Body text object (required)</label>
             <input
                 style="text-transform: none;" 

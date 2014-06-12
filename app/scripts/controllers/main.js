@@ -29,7 +29,7 @@ angular.module('dashbenchApp')
 		};
 
 		$scope.src_comp = {
-			url: ''
+			resource_uri: ''
 		};
 
 		$scope.footer_comp = {
@@ -37,13 +37,15 @@ angular.module('dashbenchApp')
 		};
 	
 		$scope.privateDash = {
-			type: 'text',
+			dash_type: 'text',
 			content_type: ['src_comp', 'desc_comp', 'footer_comp'],
 			has_settings: false,
 			mapper_key: ['src_comp.resource_uri', 'desc_comp.header', 'desc_comp.text', 'footer_comp.footer'],
-			mapper_value: ['url'],
+			mapper_value: ['resource_uri'],
 			source_uri: ''
 		};
+
+		console.log($scope.user.dashes)
 
 		$scope.start = function() {
 			$scope.started = true;
@@ -57,7 +59,7 @@ angular.module('dashbenchApp')
 		$scope.setPrivateType = function(type) {
 
 			
-			$scope.privateDash['type'] = type;
+			$scope.privateDash['dash_type'] = type;
 
 			if (type == 'image') {
 				$scope.privateDash['content_type'] = ['src_comp', 'hero_comp', 'footer_comp'];
@@ -71,17 +73,16 @@ angular.module('dashbenchApp')
 
 		$scope.getApi = function() {
 			$(".spinner").show();
-			$.ajax({
-				"url": 'http://requestor-env.elasticbeanstalk.com/call?' + $scope.privateDash.source_uri,
-				"dataType": "json",
-				"crossDomain": true,
-				"success": function(data, status, headers){
-					// TODO: check headers.status
-					$(".spinner").hide();
-					$scope.apiResponseJson = data;
+			$http.get('http://requestor-env.elasticbeanstalk.com/call?' + $scope.privateDash.source_uri)
+			.success(function(data, status, headers){
+				// TODO: check headers.status
+				$(".spinner").hide();
+				$scope.apiResponseJson = data;
 
-					$scope.apply();
-				}
+				$scope.apply();
+			})
+			.error(function(){
+				// TODO: Handle error
 			});
 		};
 
@@ -103,7 +104,9 @@ angular.module('dashbenchApp')
 			$scope.privateDash.created_at = new Date();
 
 			$http.put('/dash', angular.toJson($scope.privateDash))
-			.success(function(){
+			.success(function(dash){
+				console.log(dash)
+				$scope.user.dashes.push(dash);
 				$scope.user.private_dashes_left--;
 				$scope.submitPressed = false;
 			})
@@ -115,43 +118,34 @@ angular.module('dashbenchApp')
 		$scope.showMe = function(dash) {
 			$(".spinner").show();
 			$scope.privateDash = dash;
-			$.ajax({
-				"url": 'http://requestor-env.elasticbeanstalk.com/call?'+dash.source_uri,
-				"crossDomain": true,
-				"success": function(data, status, headers){
-					// TODO: check headers.status
-					// console.log(headers.status)
-					$scope.apiResponseJson = data;
-					getKeys(data);
-					// console.log(data);
-					$scope.apply();
-					$(".spinner").hide();
-				}, 
-				"error": function(error) {
-					throw error;
-				}
+			for (var i = 0; i < $scope.privateDash.mapper_key.length; ++i) {
+				var key = $scope.privateDash.mapper_key[i].split('.')[0];
+				var value = $scope.privateDash.mapper_key[i].split('.')[1];
+				$scope[key][value] = $scope.privateDash.mapper_value[i];
+			}
+			$http.get('http://requestor-env.elasticbeanstalk.com/call?'+dash.source_uri)
+			.success(function(data, status, headers){
+				// TODO: check headers.status
+				// console.log(headers.status)
+				$scope.apiResponseJson = data;
+				getKeys(data);
+				// console.log(data);
+				$scope.apply();
+				$(".spinner").hide();
+			})
+			.error(function(error) {
+				throw error;
 			});
-			// $.ajax({
-			// 	"url": $scope.privateDash.api_end_point,
-			// 	"crossDomain": true,
-			// 	"success": function(data, status, headers){
-			// 		// TODO: check headers.status
-			// 		// console.log(headers.status)
-			// 		// $scope.apiResponseJson = data;
-			// 		getKeys();
-			// 		$scope.apply();
-			// 	}
-			// });
 		};
 
 		function getKeys() {
 
-			if ($scope.privateDash.type == 'image') {
-				$scope.privateDash.mapper_value = ['url'];
+			$scope.privateDash.mapper_value = [$scope.src_comp.resource_uri];
+
+			if ($scope.privateDash.dash_type == 'image') {			
 				$scope.privateDash.mapper_value.push($scope.hero_comp.main_img);
 			}
 			else {
-				$scope.privateDash.mapper_value = ['url'];
 				$scope.privateDash.mapper_value.push($scope.desc_comp.header); 
 				$scope.privateDash.mapper_value.push($scope.desc_comp.text);
 			}

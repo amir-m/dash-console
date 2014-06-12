@@ -340,36 +340,172 @@ section {
     margin-bottom: 0;
     padding-bottom: 0.5em; }
   .all-dashes .table {
-    display: table; }
-  .all-dashes .cell {
-    display: table-cell;
-    vertical-align: top;
-    padding: 0.5em; }
-  .all-dashes .middle {
-    vertical-align: middle; }
-  .all-dashes .hero {
-    padding: 0.5em;
-    width: 284px; }
-  .all-dashes .avatar {
-    border-radius: 8px;
+    display: table;
+    width: 98%; }
+    .all-dashes .table .cell {
+      display: table-cell;
+      vertical-align: top;
+      padding: 0.5em;
+      overflow: hidden; }
+      .all-dashes .table .cell.large-cell {
+        width: 50%; }
+      .all-dashes .table .cell.small-cell {
+        width: 25%; }
+      .all-dashes .table .cell.middle-aligned {
+        vertical-align: middle; }
+      .all-dashes .table .cell.bottom-aligned {
+        vertical-align: bottom; }
+  .all-dashes .avatar-img {
     width: 50px; }
-  .all-dashes .location-btn {
+    .all-dashes .avatar-img img {
+      border-radius: 8px; }
+  .all-dashes .circular-img {
+    width: 70px;
+    height: 70px;
+    border-radius: 100%;
+    border: 5px solid #17313d;
+    margin-bottom: 0.5em; }
+    .all-dashes .circular-img span {
+      display: block;
+      border-radius: 100%;
+      background: #17313d no-repeat center center;
+      background-size: cover;
+      width: 100%;
+      padding-bottom: 100%; }
+  .all-dashes .hero-comp {
+    padding: 0.5em;
+    position: relative; }
+    .all-dashes .hero-comp span {
+      display: block;
+      background: #0d212b no-repeat center center;
+      background-size: cover;
+      width: 100%;
+      padding-bottom: 75%; }
+      .all-dashes .hero-comp span.narrow-banner {
+        padding-bottom: 35%; }
+      .all-dashes .hero-comp span.tall-banner {
+        padding-bottom: 135%; }
+      .all-dashes .hero-comp span.square-banner {
+        padding-bottom: 100%; }
+    .all-dashes .hero-comp .stats-comp {
+      background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+      background: linear, to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%;
+      position: absolute;
+      bottom: 0;
+      margin-bottom: 0.5em;
+      width: 100%;
+      padding: 4em 0 0.3em; }
+      .all-dashes .hero-comp .stats-comp .cell {
+        opacity: 0.7; }
+        .all-dashes .hero-comp .stats-comp .cell:nth-child(2) {
+          border: none; }
+  .all-dashes .geo-comp .location-btn {
     background: url(../img/location-btn.png) no-repeat center center;
     background-size: 20px; }
-  .all-dashes .location-btn a {
-    width: 40px;
-    height: 40px;
-    display: block; }
+    .all-dashes .geo-comp .location-btn a {
+      width: 100%;
+      padding-bottom: 50%;
+      margin: auto;
+      display: block; }
+  .all-dashes .sports-comp h1 {
+    line-height: 0; }
+  .all-dashes .stats-comp {
+    margin: 1em auto; }
+    .all-dashes .stats-comp h1 {
+      line-height: 0.8em; }
+    .all-dashes .stats-comp p {
+      margin-bottom: 0;
+      line-height: 1em; }
+    .all-dashes .stats-comp .cell:nth-child(2) {
+      border-left: 1px solid #364349;
+      border-right: 1px solid #364349; }
+  .all-dashes .weather-comp h1.scalar {
+    font-size: 2em; }
+    .all-dashes .weather-comp h1.scalar sup {
+      position: relative;
+      top: -0.4em;
+      font-size: 0.6em; }
+  .all-dashes .weather-comp .large-cell > div {
+    margin: auto;
+    max-width: 7em; }
+  .all-dashes .charts-comp {
+    width: 283px; }
+  .all-dashes .error-comp {
+    margin: 2em auto; }
+  .all-dashes .footer-comp {
+    color: #666;
+    text-align: right;
+    padding-right: 1em; }
   .all-dashes .grey {
     color: #666; }
-  .all-dashes .bold {
-    font-weight: 400; }
   .all-dashes .centered {
     text-align: center; }
-  .all-dashes .middle {
-    vertical-align: middle; }
   .all-dashes .unit {
     font-size: 0.7em; }
+  .all-dashes .settings {
+    min-height: 80px; }
+    .all-dashes .settings ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 1em 2%;
+      border-radius: 2px;
+      color: #666;
+      background: #fff;
+      max-height: 158px;
+      min-height: 44px;
+      overflow: scroll; }
+      .all-dashes .settings ul li {
+        padding: 1em 0.5em;
+        padding-left: 0;
+        margin-left: 1em;
+        border-bottom: 1px solid #ccc; }
+        .all-dashes .settings ul li:last-child {
+          border: none; }
+      .all-dashes .settings ul .selected {
+        background: url(../img/list-box-selected.png) no-repeat 95% center;
+        background-size: 14px; }
+    .all-dashes .settings .input-comp > div {
+      width: 230px;
+      margin: 1em auto;
+      position: relative; }
+      .all-dashes .settings .input-comp > div .clear-feild {
+        width: 40px;
+        height: 40px;
+        display: block;
+        background: transparent url(../img/clear-field-btn.png) no-repeat center center;
+        background-size: 60%;
+        cursor: pointer;
+        position: absolute;
+        top: -0.3em;
+        right: 0; }
+    .all-dashes .settings input {
+      width: 90%;
+      max-width: 230px;
+      padding: 0.5em;
+      font-size: 1em;
+      display: block;
+      margin: 1em auto;
+      border: none;
+      border-radius: 3px; }
+    .all-dashes .settings button {
+      width: 60%;
+      max-width: 180px;
+      padding: 0.5em 2em;
+      border: 1px solid #fff;
+      display: block;
+      color: #fff;
+      text-transform: lowercase;
+      font-size: 1em;
+      background-color: transparent;
+      border-radius: 4px;
+      font-weight: 300;
+      margin: 0.5em auto 1.5em; }
+    .all-dashes .settings footer {
+      border-top: 1px solid #163240;
+      font-size: 0.8em;
+      line-height: 1.8em; }
+      .all-dashes .settings footer .credit {
+        margin-top: 1em; }
 
 /* ==========================================================================
    Helper classes
@@ -524,7 +660,7 @@ section {
   h2,
   h3 {
     page-break-after: avoid; } }
-    
+
 .spinner {
   width: 80px;
   height: 80px;
@@ -557,7 +693,6 @@ section {
     animation-iteration-count: infinite;
     animation-direction: linear;
     transform-origin: center center; }
-
 @-webkit-keyframes bounce_circularG {
   0% {
     -webkit-transform: rotate(360deg); }

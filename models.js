@@ -55,7 +55,6 @@ var PrivateDashSchema = new mongoose.Schema({
 	id: String,
 	confirmation_id: String,
 	
-	dash_type: { type: String, default: 'privateDash'},
 	dash_title: String,
 	dash_type: String,
 	data_container: String,

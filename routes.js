@@ -227,8 +227,8 @@ exports.putDash = function(req, res, next) {
 			req.body.name = user.name;
 			req.body.email = user.email;
 
-			console.log(req.body);
-			return res.send(req.body);
+			// console.log(req.body);
+			// return res.send(req.body);
 			
 			var pd = new models.PrivateDash(req.body);
 
