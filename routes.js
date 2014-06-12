@@ -229,6 +229,7 @@ exports.putDash = function(req, res, next) {
 
 			console.log(req.body);
 			return res.send(req.body);
+			
 			var pd = new models.PrivateDash(req.body);
 
 			pd.save(function(error){

@@ -13,7 +13,7 @@ angular.module('dashbenchApp')
 					var begin = '<section><div>',
 					end = '</div></section>';
 
-					// console.log(scope.privateDash);
+					console.log(scope.privateDash);
 
 					if (!scope.privateDash.data_container || !scope.apiResponseJson || scope.apiResponseJson.length == 0) return;
 

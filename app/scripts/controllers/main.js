@@ -40,7 +40,7 @@ angular.module('dashbenchApp')
 			type: 'text',
 			content_type: ['src_comp', 'desc_comp', 'footer_comp'],
 			has_settings: false,
-			mapper_key: '',
+			mapper_key: ['src_comp.resource_uri', 'desc_comp.header', 'desc_comp.text', 'footer_comp.footer'],
 			mapper_value: ['url'],
 			source_uri: ''
 		};
