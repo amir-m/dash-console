@@ -45,14 +45,34 @@ angular.module('dashbenchApp')
 			source_uri: ''
 		};
 
-		console.log($scope.user.dashes)
-
 		$scope.start = function() {
 			$scope.started = true;
+					$scope.hero_comp = {
+				main_img: ''
+			};
+
+			$scope.desc_comp = {
+				header: '',
+				text: ''
+			};
+
+			$scope.src_comp = {
+				resource_uri: ''
+			};
+
+			$scope.footer_comp = {
+				footer: ''
+			};
+		
 			$scope.privateDash = {
 				dash_type: 'text',
-				type_indicator: 'type_text'
+				content_type: ['src_comp', 'desc_comp', 'footer_comp'],
+				has_settings: false,
+				mapper_key: ['src_comp.resource_uri', 'desc_comp.header', 'desc_comp.text', 'footer_comp.footer'],
+				mapper_value: ['resource_uri'],
+				source_uri: ''
 			};
+
 			$scope.apiResponseJson = null;
 		};
 

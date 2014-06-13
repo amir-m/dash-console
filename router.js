@@ -20,6 +20,11 @@ module.exports = function (app, models, notifications, redisClient) {
 	// app.delete('/post/like/:post_id', routes.deletePostLike);
 	// app.delete('/post/dislike/:post_id', routes.deletePostDisLike);
 	// app.put('/exit', routes.putExit);
+	
+	app.get('/health', function(req, res){
+		return res.send(200);
+	});
 
 	app.get('/:else', routes.getLast);
+
 };

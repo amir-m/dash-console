@@ -10,16 +10,17 @@ angular.module('dashbenchApp')
 			link: function postLink(scope, element, attrs) {
 
 				scope.$on('show_dash', function(){
+
+					$('.flipsnap').empty();
+
 					var begin = '<section><div>',
 					end = '</div></section>';
 
-					console.log(scope.privateDash);
 					// console.log(scope.apiResponseJson);
 
 					if (!scope.privateDash.data_container || !scope.apiResponseJson || scope.apiResponseJson.length == 0) return;
 
 					var apiResponseJson = scope.apiResponseJson[scope.privateDash.data_container][0];
-					console.log(apiResponseJson)
 					apiResponseJson.components = {}
 
 					for (var j = 0; j < scope.privateDash.content_type.length; ++j) {
@@ -36,9 +37,6 @@ angular.module('dashbenchApp')
 								if (k != values.length -1) value += '.';
 							}
 						}
-						console.log(scope.privateDash.mapper_value[j])
-						console.log("apiResponseJson.components."+scope.privateDash.mapper_key[j]+
-							" = apiResponseJson." + value)
 						eval("apiResponseJson.components."+scope.privateDash.mapper_key[j]+
 							" = apiResponseJson." + value);
 					}
