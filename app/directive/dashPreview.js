@@ -13,14 +13,17 @@ angular.module('dashbenchApp')
 
 					$('.flipsnap').empty();
 
-					var begin = '<section><div>',
+					var apiResponseJson, begin = '<section><div>',
 					end = '</div></section>';
 
-					// console.log(scope.apiResponseJson);
-
 					if (!scope.privateDash.data_container || !scope.apiResponseJson || scope.apiResponseJson.length == 0) return;
-
-					var apiResponseJson = scope.apiResponseJson[scope.privateDash.data_container][0];
+					
+					if (scope.privateDash.source_return_type == 'xml') {
+						eval('apiResponseJson = scope.apiResponseJson.'+scope.privateDash.data_container+'[0]');
+					}
+					else {
+						var apiResponseJson = scope.apiResponseJson[scope.privateDash.data_container][0];
+					}
 					apiResponseJson.components = {}
 
 					for (var j = 0; j < scope.privateDash.content_type.length; ++j) {
@@ -29,16 +32,25 @@ angular.module('dashbenchApp')
 
 					for (var j = 0; j < scope.privateDash.mapper_key.length; ++j) {
 						var value = scope.privateDash.mapper_value[j];
-						if (scope.privateDash.mapper_value[j].indexOf('.') != -1) {
-							value = '';
-							var values = scope.privateDash.mapper_value[j].split('.');
-							for (var k = 0; k < values.length; ++k) {
-								value += values[k];
-								if (k != values.length -1) value += '.';
+						if (scope.privateDash.source_return_type == 'json') {
+							if (scope.privateDash.mapper_value[j].indexOf('.') != -1) {
+								value = '';
+								var values = scope.privateDash.mapper_value[j].split('.');
+								for (var k = 0; k < values.length; ++k) {
+									value += values[k];
+									if (k != values.length -1) value += '.';
+								}
 							}
+							eval("apiResponseJson.components."+scope.privateDash.mapper_key[j]+
+								" = apiResponseJson." + value);
 						}
-						eval("apiResponseJson.components."+scope.privateDash.mapper_key[j]+
-							" = apiResponseJson." + value);
+						else {
+
+							console.log("apiResponseJson.components."+scope.privateDash.mapper_key[j]+
+								" = apiResponseJson" + value);
+							eval("apiResponseJson.components."+scope.privateDash.mapper_key[j]+
+								" = apiResponseJson" + value);
+						}
 					}
 					for (var j = 0; j < scope.privateDash.content_type.length; ++j) {
 						var component = '<' + scope.privateDash.content_type[j] +'>' + '</' + scope.privateDash.content_type[j] +'>';

@@ -3,26 +3,54 @@
 </header>
 <div class="main-view" >
 
-    <div ng-show="user.dashes.length > 0">
+    <div ng-show="user.dashes.length > 0 && !dash_specs">
         <section class="greeting" >
-            <p>Hey <span>{{user.name}}</span>,</p>
-                <h1>You've built  
+            <p>Hey <span><b>{{user.name}}</b></span>,</p>
+                <h1 ng-show="user.dashes.length > 0">
+                    You've built  
                     <span ng-show="user.dashes.length > 0" ng-repeat=" dash in user.dashes">
-                        <b><a ng-click="showMe(dash)">{{dash.dash_title}}</a>, </b>
+                        <b><a ng-click="showMe(dash)">{{dash.dash_title}}</a></b><span ng-show="$index < user.dashes.length - 1">,&nbsp;</span><span ng-show="$index == user.dashes.length - 1">.</span>
                     </span>
                 </h1>
+                <div ng-show="user.dashes.length > 0 && user.private_dashes_left > 0">
+                    <h1>
+                        You ready to build another dash together?
+                    </h1>
+                    <button ng-click="start()">Let's do it!</button>
+                </div>
             <!-- <button class="show-modal" ng-click="showMe()">Show me a glimps!</button> -->
         </section>
     </div>
 
-    <div ng-show="user.private_dashes_left > 0">
-
-        <section class="greeting" ng-show="!started">
+    <div ng-show="user.private_dashes_left > 0 && !dash_specs">
+        <section class="greeting" ng-show="!started && user.dashes.length == 0">
             <p>Hey <span>{{user.name}}</span>,</p>
             <h1>You ready to build a dash together?</h1>
             <button ng-click="start()">Let's do it!</button>
         </section>
-        <section>
+    </div>
+    <div ng-show="user.private_dashes_left > 0 && dash_specs">
+        <section class="temps">
+            <label>How do you want to create your new Dash?</label>
+            <a 
+                class="selected" 
+                ng-click="showHide('webapp', 'json')">Using Web App
+            </a>
+            <a ng-click="showHide('json', 'webapp')" >
+                Using a Json Object
+            </a>
+        </section>
+
+        <div id="json" style="display:none;">
+            <section>
+                <textarea ng-model="json" style="width:100%; min-height: 600px">
+                </textarea>
+                <button ng-click="tryIt(true)">Try It</button>
+            </section>
+        </div>
+
+        <div id="webapp">    
+            <section>
             <label>Choose a unique name for your dash,</label>
             <input
                 style="text-transform: none;" 
@@ -31,98 +59,99 @@
                 placeholder="MyUniqueDash" 
                 required 
                 check-dash-unique-name
-                >
-        </section>
+                    >
+            </section>
 
-        <section class="temps">
-            <label>Pick a template,</label>
-            <a 
-                class="selected" 
-                ng-click="setPrivateType('text')">Text only
-            </a>
-            <a ng-click="setPrivateType('image')" >
-                Image only
-            </a>
-            <!-- <a 
-                ng-click="setPrivateType('slideshow', 'image_text')">
-                Image & text
-            </a> -->
-        </section>
+            <section class="temps">
+                <label>Pick a template,</label>
+                <a 
+                    class="selected" 
+                    ng-click="setPrivateType('text')">Text only
+                </a>
+                <a ng-click="setPrivateType('image')" >
+                    Image only
+                </a>
+                <!-- <a 
+                    ng-click="setPrivateType('slideshow', 'image_text')">
+                    Image & text
+                </a> -->
+            </section>
 
-        <section>
-            <label>Paste your API end point here</label>
-            <!-- <input
-                style="text-transform: none;" 
-                type="text" 
-                placeholder="http://example.com/api?key='your_key_here_if_needed'" 
-                required ng-model="apiEndPoint"> -->
-            <input
-                style="text-transform: none;" 
-                type="text" 
-                placeholder="http://example.com/api?key='your_key_here_if_needed'" 
-                required ng-model="privateDash.source_uri">
-            <button class="get-btn" ng-click="getApi()">GET</button>
-            <pre api-response-object style="text-transform: none;">
-            </pre>
-        </section>
+            <section>
+                <label>Paste your API end point here</label>
+                <!-- <input
+                    style="text-transform: none;" 
+                    type="text" 
+                    placeholder="http://example.com/api?key='your_key_here_if_needed'" 
+                    required ng-model="apiEndPoint"> -->
+                <input
+                    style="text-transform: none;" 
+                    type="text" 
+                    placeholder="http://example.com/api?key='your_key_here_if_needed'" 
+                    required ng-model="privateDash.source_uri">
+                <button class="get-btn" ng-click="getApi()">GET</button>
+                <pre api-response-object style="text-transform: none;">
+                </pre>
+            </section>
 
-        <section>
-            <h2>Now let's do some extraction magic<br> on our json object and put it in good use</h2>
-        </section>
+            <section>
+                <h2>Now let's do some extraction magic<br> on our json object and put it in good use</h2>
+            </section>
 
-        <section>
-            <label>Extract the array of objects which contains the sources</label>
-            <input
-                style="text-transform: none;" 
-                type="text" placeholder="object.array" 
-                ng-model="privateDash.data_container">
-        </section>
+            <section>
+                <label>Extract the array of objects which contains the sources</label>
+                <input
+                    style="text-transform: none;" 
+                    type="text" placeholder="object.array" 
+                    ng-model="privateDash.data_container">
+            </section>
 
-        <section>
-            <label>Extract the source link </label>
-            <input
-                style="text-transform: none;" 
-                type="text" 
-                placeholder="object.link"
-                ng-model="src_comp.resource_uri">
-        </section>
+            <section>
+                <label>Extract the source link </label>
+                <input
+                    style="text-transform: none;" 
+                    type="text" 
+                    placeholder="object.link"
+                    ng-model="src_comp.resource_uri">
+            </section>
 
-        <section ng-show="privateDash.dash_type != 'text'">
-            <label>Extract the Hero image object (required)</label>
-            <input
-                style="text-transform: none;" 
-                type="text" placeholder="object.main_img_url" 
-                ng-model="hero_comp.main_img">
-        </section>
+            <section ng-show="privateDash.dash_type != 'text'">
+                <label>Extract the Hero image object (required)</label>
+                <input
+                    style="text-transform: none;" 
+                    type="text" placeholder="object.main_img_url" 
+                    ng-model="hero_comp.main_img">
+            </section>
 
-        <section ng-show="privateDash.dash_type != 'image'">
-            <label>Extract the Headline object (required)</label>
-            <input
-                style="text-transform: none;" 
-                type="text" placeholder="object.header"
-                ng-model="desc_comp.header">
-        </section>
-        
-        <section ng-show="privateDash.dash_type == 'text'">
-            <label>Extract the Body text object (required)</label>
-            <input
-                style="text-transform: none;" 
-                type="text" placeholder="object.text"
-                ng-model="desc_comp.text">
-        </section>
-        
-        <section>
-            <label>Extract the Footer object (required)</label>
-            <input
-                style="text-transform: none;" 
-                type="text" placeholder="object.footer"
-                ng-model="footer_comp.footer">
-        </section>
-        
-        <section class="test">
-            <h2>That's about it! <br>now Let's see how it looks...</h2>
-            <button ng-click="tryIt()">try it!</button>
-        </section>
+            <section ng-show="privateDash.dash_type != 'image'">
+                <label>Extract the Headline object (required)</label>
+                <input
+                    style="text-transform: none;" 
+                    type="text" placeholder="object.header"
+                    ng-model="desc_comp.header">
+            </section>
+            
+            <section ng-show="privateDash.dash_type == 'text'">
+                <label>Extract the Body text object (required)</label>
+                <input
+                    style="text-transform: none;" 
+                    type="text" placeholder="object.text"
+                    ng-model="desc_comp.text">
+            </section>
+            
+            <section>
+                <label>Extract the Footer object (required)</label>
+                <input
+                    style="text-transform: none;" 
+                    type="text" placeholder="object.footer"
+                    ng-model="footer_comp.footer">
+            </section>
+            
+            <section class="test">
+                <h2>That's about it! <br>now Let's see how it looks...</h2>
+                <button ng-click="tryIt()">try it!</button>
+            </section>
+        </div>
     </div>
 </div>
 
