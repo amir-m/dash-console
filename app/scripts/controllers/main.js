@@ -344,3 +344,23 @@ angular.module('dashbenchApp')
 // 	"mapper_value": ["url", "player.name", "title", "player.avatar_url", "image_url", "created_at"],
 // 	"has_settings": "true"
 // },
+
+// {
+// 	"dash_type": "image",
+// 	"dash_title": "Playboy",
+// 	"source_return_type": "json",
+// 	"source_uri": ["http://graph.facebook.com/75329244085/photos", "http://graph.facebook.com/198283703580756/photos", "http://graph.facebook.com/133883469959292/photos", "http://graph.facebook.com/141890045833556/photos"],
+// 	"content_type": ["src_comp", "hero_comp"],
+// 	"setting_type": "radio",
+// 	"selected_setting": "Playboy",
+// 	"settings": ["Playboy", "Playboy Plus", "Playboy Romania", "Playboy Miss Social"],
+// 	"data_container": "data",
+// 	"mapper_key": ["src_comp.resource_uri", "hero_comp.main_img"],
+// 	"mapper_value": ["link", "images[0].source"],
+// 	"has_settings": "true"
+// },
+
+
+
+
+// db.benchusers.insert({name: 'Mo'}, { "__v" : 1, "_id" : ObjectId("53ab0d97d36784bdae567406"), "confirmation_id" : "YTlhNjJkZGQ1MTlkNmQ1ZDEwMmE4ZTU1NjMyYWY5YzYzYmJiNjhiYg", "confirmed" : true, "confirmed_at" : ISODate("2014-06-25T17:58:23.481Z"), "created_at" : ISODate("2014-06-25T17:57:43.551Z"), "dash_count" : 1, "dashes" : [ { "dash_title" : "BalcanPlastic", "source_return_type" : "json", "source_uri" : "https://dl.dropboxusercontent.com/u/6038195/dashbook/balcon/balcon-static.json", "settings" : "", "data_container" : "data", "created_at" : ISODate("2014-06-27T20:11:38.994Z"), "id" : "ZjJlZjY0ODQ0MTY0N2Q2MmE3MDJjMWYxZjg4YTQ3NGRlMDRjZTQ0Nw", "user_id" : "ZmQxMWI0MTU4Y2E0M2M0MTUxNGZkY2Y0NDExNjk4Y2FmZmZmMmJkNQ", "confirmed" : false, "add_count" : 0, "view_count" : 0, "mapper_static_value" : [ ], "mapper_static_key" : [ ], "source_uri_values" : [ ], "source_uri_keys" : [ ], "has_settings" : false, "mapper_value" : [ "url", "header", "body", "hero_img", "footer" ], "mapper_key" : [ "src_comp.resource_uri", "desc_comp.header", "desc_comp.text", "hero_comp.main_img", "footer_comp.time" ], "content_type" : [ "src_comp", "hero_comp", "desc_comp", "footer_comp" ] } ], "email" : "9ea82d1300eadee1121289a00c7e0f8f", "id" : "ZmQxMWI0MTU4Y2E0M2M0MTUxNGZkY2Y0NDExNjk4Y2FmZmZmMmJkNQ", "name" : "Mo", "password" : "$2a$10$virueEES/6Dkmw5P7xpJy.gryXXJieTEA7M/U4F7HfaPlYBPff5Ly", "private_dashes_left" : 0 })
